@@ -28,6 +28,32 @@ const registerpage = async (req, res) => {
   }
 };
 
+const loginpage = async(req,res)=>{
+  try {
+    
+    const{username,password}=req.body
+    
+    const isexist = await User.findOne({username:username})
+    
+    if(isexist){
+      const passwordcheck =await bcrypt.compare(password,isexist.password)
+      if(!passwordcheck){
+        res.status(200).send({message :"incorrect password",success:false})
+
+      }else{
+        
+        console.log('logined');
+      }
+    }
+
+    
+  } catch (error) {
+    res.status(500).send({success:false, message:"something wrong"})
+    
+  }
+}
+
 module.exports = {
   registerpage,
+  loginpage
 };
