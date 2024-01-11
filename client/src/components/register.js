@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {toast} from "react-hot-toast";
+import {toast}from "react-hot-toast";
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -15,6 +15,7 @@ const Register = () => {
     password: "",
     cpassword: "",
   });
+
   const handlechangeinput = (event) => {
     const { name, value } = event.target;
     setFormData((pre) => ({

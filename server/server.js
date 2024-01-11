@@ -10,11 +10,10 @@ require("dotenv").config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const corsOptions = {
-    origin: "*",
-  };
-  
-  app.use(cors(corsOptions));
-  
+  origin: "*",
+};
+
+app.use(cors(corsOptions));
 
 const userrout = require("./routes/userroutes");
 app.use("/", userrout);

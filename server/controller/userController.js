@@ -1,6 +1,7 @@
 const User = require("../model/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const asynchandler = require("express-async-handler");
 
 const securepassword = async (password) => {
   const passwoordHash = await bcrypt.hash(password, 10);
@@ -28,32 +29,24 @@ const registerpage = async (req, res) => {
   }
 };
 
-const loginpage = async(req,res)=>{
-  try {
-    
-    const{username,password}=req.body
-    
-    const isexist = await User.findOne({username:username})
-    
-    if(isexist){
-      const passwordcheck =await bcrypt.compare(password,isexist.password)
-      if(!passwordcheck){
-        res.status(200).send({message :"incorrect password",success:false})
+const loginpage = asynchandler(async (req, res) => {
+  const { username, password } = req.body;
+  const user = await User.findOne({ username: username });
 
-      }else{
-        
-        console.log('logined');
-      }
+  if (user) {
+    const passwordcheck = await bcrypt.compare(password, user.password);
+
+    if (!passwordcheck) {
+      res.status(200).send({ message: "Incorrect password", success: false });
+    } else {
+      res.status(200).send({ message: "Login successful", success: true });
     }
-
-    
-  } catch (error) {
-    res.status(500).send({success:false, message:"something wrong"})
-    
+  } else {
+    res.status(200).send({ message: "User not found", success: false });
   }
-}
+});
 
 module.exports = {
   registerpage,
-  loginpage
+  loginpage,
 };
